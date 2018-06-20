@@ -75,14 +75,34 @@ void terminal_write(const char* data, uint32 size)
 		terminal_putchar(data[i]);
 }
 
+void copy_buffer(char* out, const char* in, uint32 len)
+{
+	for (uint32 i = 0; i < len; ++i) {
+		out[i] = in[i];
+	}
+}
+
 uint32 count = 0;
-char* messagebuffer[100000];
+char messagebuffer[25000000];
 
 void terminal_writestring(const char* data) 
+{	uint32 datalen = strlen(data);
+	if (count <= (25000000 - datalen)) { //off by one?
+		copy_buffer(messagebuffer+count, data, datalen);
+		count += datalen;
+		terminal_write(data, datalen);
+	}
+	else {
+		terminal_writestring("100,000 messages in buffer, shutting down terminal");
+	}	
+}
+
+void terminal_writestringf(const char* data, uint32 datalen) 
 {
-	if (count != 100000) {
-		messagebuffer[count++] = data;
-		terminal_write(data, strlen(data));
+	if (count <= (25000000 - datalen)) {
+		copy_buffer(messagebuffer+count, data, datalen);
+		count += datalen;
+		terminal_write(data, datalen);
 	}
 	else {
 		terminal_writestring("100,000 messages in buffer, shutting down terminal");
