@@ -1,0 +1,9 @@
+/ostools/CMakeFiles
+/ostools/cmake_install.cmake
+/ostools/CMakeCache.txt
+/ostools/coloroncolortablegenerator
+/ostools/Makefile
+
+/boot.o
+/kernel.o
+/string.o
