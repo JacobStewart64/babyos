@@ -58,14 +58,24 @@ int main() {
     //we can map to all the color datas with the enum
     //iterate through 0 - 7 and create an enum with the
     //all the different combinations of fg:bg hex values set
-    cout << endl;
+    cout << "enum VGACOLOR {" << endl;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            cout << "\t" + colormap[i].valstr + colormap[j].valstr + "," << endl;
+            cout << "\t" + colormap[i].valstr + brightcolormap[j].valstr + "," << endl;
+            cout << "\t" + brightcolormap[i].valstr + colormap[j].valstr + "," << endl;
+            cout << "\t" + brightcolormap[i].valstr + brightcolormap[j].valstr + "," << endl;
+        }
+    }
+    cout << "};" << endl;
+    cout << "const uint32 VGACOLORLEN = 256;" << endl;
     cout << "uint8 VGACOLORARR[VGACOLORLEN]  = {" << endl;
     int count = 0;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            cout << "\t(((0x" + colormap[i].val + "^0x8) << 4) + 0x" + colormap[j].val + "^0x8) << 8," << endl;
-            cout << "\t(((0x" + colormap[i].val + "^0x8) << 4) + 0x" + brightcolormap[j].val + ") << 8," << endl;
-            cout << "\t((0x" + brightcolormap[i].val + " << 4) + (0x" + colormap[j].val + "^0x8)) << 8," << endl;
+            cout << "\t(((0x" + colormap[i].val + "|0x8) << 4) + 0x" + colormap[j].val + "|0x8) << 8," << endl;
+            cout << "\t(((0x" + colormap[i].val + "|0x8) << 4) + 0x" + brightcolormap[j].val + ") << 8," << endl;
+            cout << "\t((0x" + brightcolormap[i].val + " << 4) + (0x" + colormap[j].val + "|0x8)) << 8," << endl;
             cout << "\t((0x" + brightcolormap[i].val + " << 4) + 0x" + brightcolormap[j].val + ") << 8," << endl;
             count++;
         }
@@ -78,16 +88,6 @@ int main() {
             cout << "\t\"" + colormap[i].valstr + brightcolormap[j].valstr + "\"," << endl;
             cout << "\t\"" + brightcolormap[i].valstr + colormap[j].valstr + "\"," << endl;
             cout << "\t\"" + brightcolormap[i].valstr + brightcolormap[j].valstr + "\"," << endl;
-        }
-    }
-    cout << "};" << endl << endl;
-    cout << "enum VGACOLOR {" << endl;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << "\t" + colormap[i].valstr + colormap[j].valstr + "," << endl;
-            cout << "\t" + colormap[i].valstr + brightcolormap[j].valstr + "," << endl;
-            cout << "\t" + brightcolormap[i].valstr + colormap[j].valstr + "," << endl;
-            cout << "\t" + brightcolormap[i].valstr + brightcolormap[j].valstr + "," << endl;
         }
     }
     cout << "};" << endl << endl;
