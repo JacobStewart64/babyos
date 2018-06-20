@@ -51,7 +51,7 @@ void clear_screen_from_terminal_row(void)
 void vga_next_row(void)
 {
 	set_terminal_row_px();
-	if (terminal_position < VGA_DISP_HEIGHT_PX) {
+	if (terminal_position != VGA_DISP_HEIGHT_PX) {
 		terminal_position += 80;	
 	}
 }
@@ -71,9 +71,9 @@ void terminal_putchar(char c)
 	}	
 }
  
-void terminal_write(const char* data, uint32 size) 
+void terminal_write(const char* data, uint32 datalen) 
 {
-	for (uint32 i = 0; i < size; i++)
+	for (uint32 i = 0; i < datalen; i++)
 		terminal_putchar(data[i]);
 }
 
