@@ -15,6 +15,8 @@ uint16* terminal_buffer = 0xB8000;
 char* location = "/";
 const uint32 locationlen = 1;
 uint32 cursor_column = locationlen + 1;
+uint32 count = 0;
+char messagebuffer[2000000] = {0};
 
 uint16 vga_entry(uint16 c) 
 {
@@ -41,7 +43,7 @@ void set_terminal_row_px(void)
 	terminal_position -= terminal_position % 80;
 }
 
-void clear_screen_from_terminal_position(void)
+void clear_screen_from_terminal_row(void)
 {
 	clear_screen(get_terminal_row(), VGA_DISP_HEIGHT, terminal_position % 80, VGA_DISP_WIDTH);
 }
@@ -82,31 +84,23 @@ void copy_buffer(char* out, const char* in, uint32 len)
 	}
 }
 
-uint32 count = 0;
-char messagebuffer[25000000];
-
-void terminal_writestring(const char* data) 
-{	uint32 datalen = strlen(data);
-	if (count <= (25000000 - datalen)) { //off by one?
+void terminal_writestringf(const char* data, uint32 datalen) 
+{
+	if (count <= (2000000 - datalen)) {
 		copy_buffer(messagebuffer+count, data, datalen);
 		count += datalen;
 		terminal_write(data, datalen);
 	}
 	else {
-		terminal_writestring("100,000 messages in buffer, shutting down terminal");
+		char* string = "100,000 messages in buffer, shutting down terminal";
+		uint32 stringlen = strlen(string);
+		terminal_writestringf(string, stringlen);
 	}	
 }
 
-void terminal_writestringf(const char* data, uint32 datalen) 
-{
-	if (count <= (25000000 - datalen)) {
-		copy_buffer(messagebuffer+count, data, datalen);
-		count += datalen;
-		terminal_write(data, datalen);
-	}
-	else {
-		terminal_writestring("100,000 messages in buffer, shutting down terminal");
-	}	
+void terminal_writestring(const char* data) 
+{	
+	terminal_writestringf(data, strlen(data));	
 }
 
 void kernel_main(void) 
