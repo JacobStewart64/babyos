@@ -2,7 +2,7 @@
  * They all follow the color on color
  * rule. Easy to choose your color
  * if you learn the 16 colors.
- * bg first, fg second.
+ * fg first, bg second.
  */
 enum VGACOLOR {
         BLACKONBLACK = 0x00,
