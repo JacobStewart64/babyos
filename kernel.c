@@ -10,17 +10,23 @@ const uint32 VGA_LAST_ROW = 24;
 const uint32 VGA_DISP_HEIGHT_PX = 23 * VGA_WIDTH;
 const uint32 VGA_DISP_HEIGHT = 23;
 uint32 terminal_position = 9 * VGA_WIDTH;
-uint8 terminal_color = WHITEONBLACK;
 uint16* terminal_buffer = 0xB8000;
 char* location = "/";
 const uint32 locationlen = 1;
 uint32 cursor_column = locationlen + 1;
 uint32 count = 0;
 char messagebuffer[2000000] = {0};
+uint32 terminal_color_index = BW;
+uint16 terminal_color = 29;
+
+void initialize(void)
+{
+	terminal_color = VGACOLORARR[BW];
+}
 
 uint16 vga_entry(uint16 c) 
 {
-	return c | terminal_color << 8;
+	return c | terminal_color; //terminalcolor is high bits
 }
 
 void clear_screen(uint32 yh, uint32 yw, uint32 xh, uint32 xw)
@@ -54,11 +60,6 @@ void vga_next_row(void)
 	if (terminal_position != VGA_DISP_HEIGHT_PX) {
 		terminal_position += 80;	
 	}
-}
- 
-void terminal_setcolor(uint8 color) 
-{
-	terminal_color = color;
 }
  
 void terminal_putchar(char c) 
@@ -105,35 +106,66 @@ void terminal_writestring(const char* data)
 
 void kernel_main(void) 
 {
+	initialize();
+
 	char buffer[20] = {0};
 	i32toa(buffer, 7 << 4);
 	terminal_writestring(buffer);
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 	terminal_writestring("Hello, kernel World!\n");
+	next_terminal_color();
 	terminal_writestring("Hello again lol\n");
+	next_terminal_color();
 }
